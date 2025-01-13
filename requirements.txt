@@ -1,3 +1,4 @@
 streamlit
 gdown
-nltk==3.6.3
+nltk==3.9.1
+nltk
