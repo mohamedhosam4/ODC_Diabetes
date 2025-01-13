@@ -3,14 +3,23 @@ import pickle
 import numpy as np
 import gdown
 
-# Download the model file from Google Drive
+
 url = "https://drive.google.com/uc?id=1Oqav3S8ROiZdNHMUCe7Bg-rOGuSNhwQP"
 output = "lr.pkl"
-gdown.download(url, output, quiet=False)
 
-# Load the model
-with open(output, "rb") as file:
-    model = pickle.load(file)
+try:
+    gdown.download(url, output, quiet=False)
+except Exception as e:
+    st.error(f"Error downloading the model: {e}")
+
+
+try:
+    with open(output, "rb") as file:
+        model = pickle.load(file)
+except FileNotFoundError:
+    st.error("Model file not found. Please check the download process.")
+except Exception as e:
+    st.error(f"Error loading the model: {e}")
 
 
 st.title("Diabetes Prediction App")
@@ -24,15 +33,16 @@ dpf = st.number_input("Diabetes Pedigree Function:", min_value=0.0, format="%.3f
 age = st.number_input("Age:", min_value=0, step=1)
 
 if st.button("Predict"):
-    input_data = np.array([[pregnancies, glucose, insulin, bmi, dpf, age]])
-    
-    prediction = model.predict(input_data)
-    
-    if prediction[0] == 1:
-        st.error("The patient is likely to have diabetes.")
-    else:
-        st.success("The patient is not likely to have diabetes.")
-
+    try:
+        input_data = np.array([[pregnancies, glucose, insulin, bmi, dpf, age]])
+        prediction = model.predict(input_data)
+        
+        if prediction[0] == 1:
+            st.error("The patient is likely to have diabetes.")
+        else:
+            st.success("The patient is not likely to have diabetes.")
+    except Exception as e:
+        st.error(f"Error during prediction: {e}")
 
 
 st.markdown(
