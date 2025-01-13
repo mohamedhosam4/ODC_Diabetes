@@ -3,17 +3,15 @@ import pickle
 import numpy as np
 import gdown
 
-# Google Drive file ID
-file_id = "1Oqav3S8ROiZdNHMUCe7Bg-rOGuSNhwQP"
-
 # Download the model file from Google Drive
-url = f"https://drive.google.com/uc?id={file_id}"
+url = "https://drive.google.com/uc?id=1Oqav3S8ROiZdNHMUCe7Bg-rOGuSNhwQP"
 output = "lr.pkl"
 gdown.download(url, output, quiet=False)
 
 # Load the model
 with open(output, "rb") as file:
     model = pickle.load(file)
+
 
 st.title("Diabetes Prediction App")
 st.header("Enter Patient Details:")
