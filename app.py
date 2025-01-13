@@ -2,8 +2,9 @@ import streamlit as st
 import pickle
 import numpy as np
 import gdown
+import os
 
-
+# Download the file from Google Drive
 url = "https://drive.google.com/uc?id=1Oqav3S8ROiZdNHMUCe7Bg-rOGuSNhwQP"
 output = "lr.pkl"
 
@@ -12,16 +13,20 @@ try:
 except Exception as e:
     st.error(f"Error downloading the model: {e}")
 
+# Check if the file exists after downloading
+if not os.path.exists(output):
+    st.error("Error: Model file 'lr.pkl' not found after download.")
+else:
+    try:
+        # Load the model
+        with open(output, "rb") as file:
+            model = pickle.load(file)
+    except FileNotFoundError:
+        st.error("Model file not found. Please check the download process.")
+    except Exception as e:
+        st.error(f"Error loading the model: {e}")
 
-try:
-    with open(output, "rb") as file:
-        model = pickle.load(file)
-except FileNotFoundError:
-    st.error("Model file not found. Please check the download process.")
-except Exception as e:
-    st.error(f"Error loading the model: {e}")
-
-
+# App interface
 st.title("Diabetes Prediction App")
 st.header("Enter Patient Details:")
 
@@ -43,7 +48,6 @@ if st.button("Predict"):
             st.success("The patient is not likely to have diabetes.")
     except Exception as e:
         st.error(f"Error during prediction: {e}")
-
 
 st.markdown(
     """
