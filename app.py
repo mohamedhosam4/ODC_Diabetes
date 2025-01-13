@@ -1,25 +1,17 @@
 import streamlit as st
 import pickle
 import numpy as np
-import gdown
-
+import requests
 
 url = "https://drive.google.com/uc?id=1Oqav3S8ROiZdNHMUCe7Bg-rOGuSNhwQP"
 output = "lr.pkl"
 
 try:
-    gdown.download(url, output, quiet=False)
+    response = requests.get(url, allow_redirects=True)
+    with open(output, "wb") as file:
+        file.write(response.content)
 except Exception as e:
-    st.error(f"Error downloading the model: {e}")
-
-
-try:
-    with open(output, "rb") as file:
-        model = pickle.load(file)
-except FileNotFoundError:
-    st.error("Model file not found. Please check the download process.")
-except Exception as e:
-    st.error(f"Error loading the model: {e}")
+    st.error(f"Error downloading the model using requests: {e}")
 
 
 st.title("Diabetes Prediction App")
