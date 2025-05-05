@@ -12,7 +12,6 @@
 
 This project is a **Diabetes Prediction Web Application** built using **Python**, **Machine Learning**, and **Streamlit**. It allows users to input medical data and get a prediction on whether a person is likely to have diabetes.
 
-The model is trained on the popular **Pima Indians Diabetes Dataset** using **Logistic Regression**, with a focus on accessibility and simplicity.
 
 ---
 
